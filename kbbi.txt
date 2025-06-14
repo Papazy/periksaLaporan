@@ -97120,6 +97120,7 @@ sinta
 sintagma
 sintagmatis
 sintak
+sintaks
 sintaksis
 sintaktis
 sintal

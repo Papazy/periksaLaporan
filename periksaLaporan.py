@@ -11,7 +11,7 @@ import string
 import re
 from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 
-class ItalicChecker:
+class LaporanChecker:
     def __init__(self, kamus_filepath):
         """Inisialisasi checker dengan memuat kamus dan stemmer"""
         self.kamus = self.muat_kamus(kamus_filepath)
@@ -262,15 +262,22 @@ class ItalicChecker:
             if word_lower.startswith(prefix) and len(word_lower) > len(prefix) + 2:
                 # Cek apakah setelah awalan ada kata dasar yang dikenal
                 remaining = word_lower[len(prefix):]
+                
                 base_word = self.stemmer.stem(word_lower)
+                
+                # Cek apakah kata dasar atau sisa kata adalah kata yang dikenal
+                # Jika kata dasar sudah dikenal, tidak perlu cek sisa kata
+                # debug
+                print(f"Memeriksa awalan: {prefix}, sisa kata: {remaining}, kata dasar: {base_word}")
                 
                 # Jika kata dasar atau sisa kata ada di kamus
                 if remaining in self.kamus or base_word in self.kamus:
+                    print(f"Kata dengan awalan valid: %s", word_lower)
                     return True
                 
                 # Atau jika awalan + kata dasar masuk akal secara morfologi
-                if len(remaining) >= 3:  # Minimal 3 huruf setelah awalan
-                    return True
+                # if len(remaining) >= 3:  # Minimal 3 huruf setelah awalan
+                #     return True
         
         # Cek akhiran
         for suffix in indonesian_suffixes:
@@ -621,7 +628,7 @@ def main():
     print("=" * 40)
     
     # Inisialisasi checker
-    checker = ItalicChecker("kbbi.txt")
+    checker = LaporanChecker("kbbi.txt")
     if not checker.kamus:
         return
     
