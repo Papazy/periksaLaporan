@@ -200,6 +200,22 @@ class LaporanChecker:
             'bs': 'bisa',
             'dpt': 'dapat'
         }
+        
+    def is_kata_ulang(self, word):
+        """Mendeteksi kata ulang baku (cth: fitur-fitur, buku-buku)."""
+        # Harus mengandung tepat satu tanda hubung dan tidak diawali/diakhiri hubung
+        if word.count('-') != 1 or word.startswith('-') or word.endswith('-'):
+            return False
+
+        parts = word.split('-')
+        # Harus ada dua bagian dan keduanya identik
+        if len(parts) == 2 and parts[0] == parts[1]:
+            # Cek apakah kata dasarnya ada di kamus
+            base_form = parts[0]
+            if base_form in self.kamus:
+                return True
+        return False
+
 
     def is_number_or_code(self, word):
         """Deteksi nomor, kode, atau nomor romawi"""
@@ -332,6 +348,10 @@ class LaporanChecker:
         # PRIORITAS 1: Cek di kamus Indonesia TERLEBIH DAHULU
         if word_lower in self.kamus or base_word in self.kamus:
             return False, "indonesian"
+        
+        # <<< DIPERBAIKI >>> PRIORITAS 1.5: Cek apakah kata ulang yang valid
+        if self.is_kata_ulang(word_lower):
+            return False, "indonesian_derived"
         
         # PRIORITAS 2: Cek apakah kata memiliki awalan/akhiran Indonesia
         if self.has_indonesian_affixes(word_lower):
