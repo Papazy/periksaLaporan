@@ -1,0 +1,7 @@
+Masih ada beberapa yang perlu perbaikan
+
+- kata "dilatarbelakangi", "ketidakkonsistenan" masih terdeteksi salah (seharusnya benar)
+- yang sudah italic masih dikategorikan salah.
+- angka seperti "tahun 2024/2025", "1-5" masih salah
+- Nama orang seperti "Abdullah" masih dikategorikan salah
+- singkatan seperti (OOP), (RPL) masih dikategorikan salah
